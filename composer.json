@@ -1,0 +1,16 @@
+{
+    "name": "OpenMageModuleFostering/ajaxcallback",
+    "type": "magento-module",
+    "license": "GPL",
+    "homepage": "",
+    "description": "callback/contact AJAX form ",
+    "authors": [
+    {
+        "name": "bxN5",
+        "email": "bxN5@ua.fm"
+    }
+],
+    "suggest": {
+        "magento-hackathon/magento-composer-installer": "*"
+    }
+}
