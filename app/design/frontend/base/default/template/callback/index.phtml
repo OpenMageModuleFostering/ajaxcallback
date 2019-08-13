@@ -1,0 +1,100 @@
+<section class="modal--show" id="modal-text" tabindex="-1"
+        role="dialog" aria-labelledby="modal-label" aria-hidden="true">
+
+    <div class="modal-inner">
+        <header id="modal-label"><?php print Mage::getStoreConfig('contacts/callback/header');?></header>
+        <div class="modal-content">
+<div id="messages_product_view"><?php echo $this->getMessagesBlock()->toHtml() ?></div>
+
+<form action="<?php print Mage::getUrl('callback/index/callbacksend');?>" id="contactForm" method="post">
+    <div class="fieldset">
+        <h2 class="legend"><?php echo Mage::helper('contacts')->__('Contact Information') ?></h2>
+        <ul class="form-list">
+            <li class="fields">
+                <div class="field">
+                    <label for="name" class="required"><em>*</em><?php echo Mage::helper('contacts')->__('Name') ?></label>
+                    <div class="input-box">
+                        <input name="name" id="name" title="<?php echo Mage::helper('contacts')->__('Name') ?>" value="<?php echo $this->escapeHtml($this->helper('contacts')->getUserName()) ?>" class="input-text required-entry" type="text" />
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="email" class="required"><em>*</em><?php echo Mage::helper('contacts')->__('Email') ?></label>
+                    <div class="input-box">
+                        <input name="email" id="email" title="<?php echo Mage::helper('contacts')->__('Email') ?>" value="<?php echo $this->escapeHtml($this->helper('contacts')->getUserEmail()) ?>" class="input-text required-entry validate-email" type="text" />
+                    </div>
+                </div>
+            </li>
+            <li>
+                <label for="telephone" class="required"><?php echo Mage::helper('contacts')->__('Telephone') ?></label>
+                <div class="input-box">
+                    <input name="phone" id="telephone" title="<?php echo Mage::helper('contacts')->__('Telephone') ?>" value="" class="required-entry input-text" type="text" />
+                </div>
+            </li>
+            <li class="wide">
+                <label for="comment" class="required"><em>*</em><?php echo Mage::helper('contacts')->__('Comment') ?></label>
+                <div class="input-box">
+                    <textarea name="message" id="comment" title="<?php echo Mage::helper('contacts')->__('Comment') ?>" class="required-entry input-text" cols="5" rows="3"></textarea>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="buttons-set">
+        <p class="required"><?php echo Mage::helper('contacts')->__('* Required Fields') ?></p>
+        <input type="text" name="hideit" id="hideit" value="" style="display:none !important;" />
+        <button type="submit" onclick="contactForm.submit(this); return false;" title="<?php echo Mage::helper('contacts')->__('Submit') ?>" class="button"><span><span><?php echo Mage::helper('contacts')->__('Submit') ?></span></span></button>
+    </div>
+    <div class="result"></div>
+</form>
+<script type="text/javascript">
+//<![CDATA[
+    var contactForm = new VarienForm('contactForm', true);
+    contactForm.submit = function(button, url) {
+            if (this.validator.validate()) {
+                var form = this.form;
+                var oldUrl = form.action;
+                if (url) { form.action = url; }
+                var e = null;
+                try { 
+            //this.form.submit();
+            //loggin(this.form.action,this.form.serialize(),this.form.method);
+
+            new Ajax.Request(this.form.action,{
+            method:'POST',
+            parameters:this.form.serialize(),
+            requestHeaders: {Accept: 'application/json'},
+            onSuccess:function(transport){
+                var response=transport.responseText.evalJSON(true);
+                if (response.status == 0) {
+                $$(".fieldset").first().insert({ after: response.message });
+               $("contactForm").disable();  
+                 }
+                else {
+                    alert(response.message)
+                }
+
+            }.bind(this)
+            });
+
+
+        } catch (e) {
+                }
+                this.form.action = oldUrl;
+                if (e) { throw e; }
+
+
+            }
+        }.bind(contactForm);
+
+//]]>
+</script>
+
+        </div>
+        <footer></footer>
+    </div>
+
+    <a href="#!" class="modal-close" title="Close this modal" data-close="Close"
+        data-dismiss="modal">?</a>
+</section>
+
+<a href="#modal-text"><?php print Mage::getStoreConfig('contacts/callback/link');?></a>
+

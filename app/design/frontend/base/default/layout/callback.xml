@@ -1,0 +1,23 @@
+<?xml version="1.0"?>   
+<layout version="0.1.0">   
+  <default>
+        <reference name="head">
+        
+            <action method="addCss">
+                <stylesheet>css/modal.css</stylesheet>
+            </action>
+        </reference>
+    </default>
+  <callback_index_index>   
+    <reference name="root">   
+      <action method="setTemplate"><template>page/2columns-left.phtml</template></action>   
+    </reference>
+    <reference name="left">   
+      <block type="callback/left" name="callback_left" template="callback/left.phtml"/>   
+    </reference>   
+    <reference name="content">   
+      <block type="callback/index" name="callback_index" template="callback/index.phtml"/>   
+    </reference>   
+  </callback_index_index>   
+</layout>   
+	
